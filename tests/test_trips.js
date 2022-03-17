@@ -22,11 +22,15 @@ describe('Tests on GTFS trips', () => {
     ]);
     expect(sortedKeys(gtfs.getIndexedTrips())).to.deep.equal(['trip_0', 'trip_1', 'trip_2', 'trip_3']);
 
-    gtfs.removeTrip(gtfs.getTripWithId('trip_2'));
+    const trip2 = gtfs.getTripWithId('trip_2');
+    gtfs.removeTrip(trip2);
     expect(sortedKeys(gtfs.getIndexedTrips())).to.deep.equal(['trip_0', 'trip_1', 'trip_3']);
+    expect(() => gtfs.removeTrip(trip2)).to.throw("item does not exist in table: trip");
 
-    gtfs.removeTrips([gtfs.getTripWithId('trip_0'), gtfs.getTripWithId('trip_3')]);
+    const trip3 = gtfs.getTripWithId('trip_3');
+    gtfs.removeTrips([trip0, trip3]);
     expect(sortedKeys(gtfs.getIndexedTrips())).to.deep.equal(['trip_1']);
+    expect(() => gtfs.removeTrips([trip0, trip3])).to.throw("item does not exist in table: trip");
 
     gtfs.setIndexedTrips(new Map([['trip_0', trip0]]));
     expect(sortedKeys(gtfs.getIndexedTrips())).to.deep.equal(['trip_0']);

@@ -40,12 +40,16 @@ describe('Tests on GTFS generic table functions', () => {
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0', 'route_1', 'route_2',
       'route_3', 'route_utf8', 'route_x', 'route_y']);
 
-    gtfs.removeItemInTable(gtfs.getRouteWithId('route_2'), ROUTE_TABLE_NAME);
+    const route2 = gtfs.getRouteWithId('route_2')
+    gtfs.removeItemInTable(route2, ROUTE_TABLE_NAME);
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0', 'route_1', 'route_3',
       'route_utf8', 'route_x', 'route_y']);
+    expect(() => gtfs.removeItemInTable(route2, ROUTE_TABLE_NAME)).to.throw("item does not exist in table: routes");
 
-    gtfs.removeItemsInTable([gtfs.getRouteWithId('route_0'), gtfs.getRouteWithId('route_3')], ROUTE_TABLE_NAME);
+    const route3 = gtfs.getRouteWithId('route_3');
+    gtfs.removeItemsInTable([route0, route3], ROUTE_TABLE_NAME);
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_1', 'route_utf8', 'route_x', 'route_y']);
+    expect(() => gtfs.removeItemsInTable([route0, route3], ROUTE_TABLE_NAME)).to.throw("item does not exist in table: routes");
 
     gtfs.setIndexedItemsAsTable(new Map([['route_0', route0]]), ROUTE_TABLE_NAME);
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0']);

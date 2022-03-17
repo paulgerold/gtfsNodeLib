@@ -26,12 +26,16 @@ describe('Tests on GTFS routes', () => {
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0', 'route_1', 'route_2',
       'route_3', 'route_utf8', 'route_x', 'route_y']);
 
-    gtfs.removeRoute(gtfs.getRouteWithId('route_2'));
+    const route2 = gtfs.getRouteWithId('route_2');
+    gtfs.removeRoute(route2);
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0', 'route_1', 'route_3',
       'route_utf8', 'route_x', 'route_y']);
+    expect(() => gtfs.removeRoute(route2)).to.throw("item does not exist in table: route");
 
-    gtfs.removeRoutes([gtfs.getRouteWithId('route_0'), gtfs.getRouteWithId('route_3')]);
+    const route3 = gtfs.getRouteWithId('route_3');
+    gtfs.removeRoutes([route0, route3]);
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_1', 'route_utf8', 'route_x', 'route_y']);
+    expect(() => gtfs.removeRoutes([route0, route3])).to.throw("item does not exist in table: route");
 
     gtfs.setIndexedRoutes(new Map([['route_0', route0]]));
     expect(sortedKeys(gtfs.getIndexedRoutes())).to.deep.equal(['route_0']);

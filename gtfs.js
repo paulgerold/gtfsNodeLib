@@ -151,7 +151,12 @@ function removeItems(gtfs, tableName, items) {
   }
 
   if (indexKeys.indexKey) {
-    items.forEach(item => indexedTable.delete(item[indexKeys.indexKey]));
+    items.forEach(item => {
+      if (!indexedTable.has(item[indexKeys.indexKey])) {
+        throw new Error(`item does not exist in table: ${tableName}`);
+      }
+      indexedTable.delete(item[indexKeys.indexKey])
+    });
     return;
   }
 

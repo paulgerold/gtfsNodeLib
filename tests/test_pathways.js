@@ -62,15 +62,15 @@ describe('Tests on GTFS pathways', () => {
     ]);
     expect(sortedKeys(gtfs.getIndexedPathways())).to.deep.equal(['1', '2', '3', '4', '5']);
 
-    gtfs.removePathway(gtfs.getPathwayWithPathwayId('1'));
+    gtfs.removePathway(pathway1);
     expect(sortedKeys(gtfs.getIndexedPathways())).to.deep.equal(['2', '3', '4', '5']);
+    expect(() => gtfs.removePathway(pathway1)).to.throw("item does not exist in table: pathways")
 
-    gtfs.removePathways([
-      gtfs.getPathwayWithPathwayId('2'),
-      gtfs.getPathwayWithPathwayId('3'),
-    ]);
+    const pathway3 = gtfs.getPathwayWithPathwayId('3');
+    gtfs.removePathways([pathway2, pathway3]);
 
     expect(sortedKeys(gtfs.getIndexedPathways())).to.deep.equal(['4', '5']);
+    expect(() => gtfs.removePathways([pathway2, pathway3])).to.throw("item does not exist in table: pathways")
 
     gtfs.setIndexedPathways(new Map([['1', pathway1], ['2', pathway2]]));
 

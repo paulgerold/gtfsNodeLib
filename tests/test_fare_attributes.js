@@ -36,6 +36,7 @@ describe('Tests on GTFS fare attributes', () => {
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.1') !== undefined).to.equal(true);
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.2') !== undefined).to.equal(false);
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.3') !== undefined).to.equal(true);
+    expect(() => gtfs.removeFareAttribute(fareAttribute2)).to.throw("item does not exist in table: fare_attributes");
 
     gtfs.removeFareAttributes([fareAttribute1, fareAttribute3]);
 
@@ -43,6 +44,7 @@ describe('Tests on GTFS fare attributes', () => {
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.1') !== undefined).to.equal(false);
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.2') !== undefined).to.equal(false);
     expect(gtfs.getFareAttributeWithId('fareAttribute.fare_id.3') !== undefined).to.equal(false);
+    expect(() => gtfs.removeFareAttributes([fareAttribute1, fareAttribute3])).to.throw("item does not exist in table: fare_attributes");
 
     done();
   });

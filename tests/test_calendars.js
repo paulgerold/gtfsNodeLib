@@ -22,12 +22,16 @@ describe('Tests on GTFS calendars', () => {
     ]);
     expect(sortedKeys(gtfs.getIndexedCalendars())).to.deep.equal(['service_0', 'service_1', 'service_2', 'service_3']);
 
-    gtfs.removeCalendar(gtfs.getCalendarWithServiceId('service_2'));
+    const calendar2 = gtfs.getCalendarWithServiceId('service_2');
+    gtfs.removeCalendar(calendar2);
     expect(sortedKeys(gtfs.getIndexedCalendars())).to.deep.equal(['service_0', 'service_1', 'service_3']);
-
-    gtfs.removeCalendars([gtfs.getCalendarWithServiceId('service_0'), gtfs.getCalendarWithServiceId('service_3')]);
+    expect(() => gtfs.removeCalendar(calendar2)).to.throw("item does not exist in table: calendar");
+    
+    const calendar3 = gtfs.getCalendarWithServiceId('service_3');
+    gtfs.removeCalendars([calendar0, calendar3]);
     expect(sortedKeys(gtfs.getIndexedCalendars())).to.deep.equal(['service_1']);
-
+    expect(() => gtfs.removeCalendars([calendar0, calendar3])).to.throw("item does not exist in table: calendar");
+    
     gtfs.setIndexedCalendars(new Map([['service_0', calendar0]]));
     expect(sortedKeys(gtfs.getIndexedCalendars())).to.deep.equal(['service_0']);
 

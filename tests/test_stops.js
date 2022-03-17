@@ -24,11 +24,15 @@ describe('Tests on GTFS stops', () => {
     ]);
     expect(sortedKeys(gtfs.getIndexedStops())).to.deep.equal(['stop_0', 'stop_1', 'stop_2', 'stop_3', 'stop_4']);
 
-    gtfs.removeStop(gtfs.getStopWithId('stop_2'));
+    const stop2 = gtfs.getStopWithId('stop_2');
+    gtfs.removeStop(stop2);
     expect(sortedKeys(gtfs.getIndexedStops())).to.deep.equal(['stop_0', 'stop_1', 'stop_3', 'stop_4']);
-
-    gtfs.removeStops([gtfs.getStopWithId('stop_1'), gtfs.getStopWithId('stop_3')]);
+    expect(() => gtfs.removeStop(stop2)).to.throw("item does not exist in table: stop");
+    
+    const stop3 = gtfs.getStopWithId('stop_3'); 
+    gtfs.removeStops([stop1, stop3]);
     expect(sortedKeys(gtfs.getIndexedStops())).to.deep.equal(['stop_0', 'stop_4']);
+    expect(() => gtfs.removeStops([stop1, stop3])).to.throw("item does not exist in table: stop");
 
     gtfs.setIndexedStops(new Map([['stop_0', stop0], ['stop_1', stop1]]));
     expect(sortedKeys(gtfs.getIndexedStops())).to.deep.equal(['stop_0', 'stop_1']);

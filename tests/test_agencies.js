@@ -22,11 +22,15 @@ describe('Tests on GTFS agencies', () => {
     ]);
     expect(sortedKeys(gtfs.getIndexedAgencies())).to.deep.equal(['agency_0', 'agency_1', 'agency_2', 'agency_3']);
 
-    gtfs.removeAgency(gtfs.getAgencyWithId('agency_2'));
+    const agency2 = gtfs.getAgencyWithId('agency_2');
+    gtfs.removeAgency(agency2);
     expect(sortedKeys(gtfs.getIndexedAgencies())).to.deep.equal(['agency_0', 'agency_1', 'agency_3']);
-
-    gtfs.removeAgencies([gtfs.getAgencyWithId('agency_0'), gtfs.getAgencyWithId('agency_3')]);
+    expect(() => gtfs.removeAgency(agency2)).to.throw("item does not exist in table: agency");
+    
+    const agency3 = gtfs.getAgencyWithId('agency_3');
+    gtfs.removeAgencies([agency0, agency3]);
     expect(sortedKeys(gtfs.getIndexedAgencies())).to.deep.equal(['agency_1']);
+    expect(() => gtfs.removeAgencies([agency0, agency3])).to.throw("item does not exist in table: agency");
 
     gtfs.setIndexedAgencies(new Map([['agency_0', agency0]]));
     expect(sortedKeys(gtfs.getIndexedAgencies())).to.deep.equal(['agency_0']);
